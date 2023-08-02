@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -109,11 +111,28 @@ class _AddPropertyBody extends StatelessWidget {
           CustomeButton(
             text: 'Continue',
             onPressed: () {
-              Navigator.pushNamed(
+              Navigator.push(
                 context,
-                GoogleMapView.route,
-                arguments: addPropertyCubit.selectedRegion,
-              );
+                MaterialPageRoute(
+                  builder: (context) {
+                    return GoogleMapView(
+                      select: false,
+                      lat: addPropertyCubit.selectedRegion != null
+                          ? addPropertyCubit.selectedRegion!.x
+                          : null,
+                      lon: addPropertyCubit.selectedRegion != null
+                          ? addPropertyCubit.selectedRegion!.y
+                          : null,
+                    );
+                  },
+                ),
+              ).then((value) =>
+                  log('${value['lat']}xxxxxxxxxxxxxx${value['long']}'));
+              // Navigator.pushNamed(
+              //   context,
+              //   GoogleMapView.route,
+              //   arguments: addPropertyCubit.selectedRegion,
+              // );
             },
           ),
         ],

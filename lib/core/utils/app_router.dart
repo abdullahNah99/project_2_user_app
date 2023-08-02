@@ -9,6 +9,6 @@ abstract class AppRouter {
     LoginView.route: (context) => const LoginView(),
     RegisterView.route: (context) => const RegisterView(),
     AddPropertyView.route: (context) => const AddPropertyView(),
-    GoogleMapView.route: (context) => const GoogleMapView(),
+    // GoogleMapView.route: (context) => const GoogleMapView(),
   };
 }
