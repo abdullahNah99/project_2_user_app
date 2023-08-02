@@ -45,7 +45,7 @@ class CustomeTextField extends StatelessWidget {
         ),
         const SizedBox(width: 20),
         SizedBox(
-          width: 270.w,
+          width: 260.w,
           child: TextFormField(
             validator: validator ??
                 (value) {
