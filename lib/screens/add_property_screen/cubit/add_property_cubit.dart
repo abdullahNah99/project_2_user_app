@@ -16,6 +16,12 @@ class AddPropertyCubit extends Cubit<AddPropertyStates> {
   RegionModel? selectedRegion;
   bool governoratesLoading = false;
   bool regionsLoading = false;
+  List<RegionModel> locations = [
+    RegionModel(id: 1, x: 1.3213613636, y: 1.654643, name: "a"),
+    RegionModel(id: 2, x: 1.357575, y: 1.6798724123, name: "b"),
+    RegionModel(id: 3, x: 1.3213613636, y: 1.12354643, name: "c"),
+    RegionModel(id: 4, x: 1.3213613636, y: 1.5758743, name: "d"),
+  ];
 
   Future<void> getGovernorates() async {
     emit(FetchItemsLoading());
