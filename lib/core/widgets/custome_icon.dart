@@ -12,12 +12,12 @@ class CustomeIcon extends StatelessWidget {
       width: size ?? 45.0,
       height: size ?? 45.0,
       decoration: const BoxDecoration(
-          color: AppColors.color2,
+          color: AppColors.defaultColor,
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Icon(
         icon,
         size: size == null ? 30.0 : (size! * (2 / 3)),
-        color: AppColors.defaultColor,
+        color: AppColors.color2,
       ),
     );
   }

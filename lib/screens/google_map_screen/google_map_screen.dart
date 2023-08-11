@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_app/core/models/region_model.dart';
@@ -19,10 +20,10 @@ class GoogleMapView extends StatefulWidget {
   });
 
   @override
-  State<GoogleMapView> createState() => _googleMapViewState();
+  State<GoogleMapView> createState() => _GoogleMapViewState();
 }
 
-class _googleMapViewState extends State<GoogleMapView> {
+class _GoogleMapViewState extends State<GoogleMapView> {
   Position? cl;
 
   CameraPosition? _kGooglePlex;
@@ -33,7 +34,7 @@ class _googleMapViewState extends State<GoogleMapView> {
     LocationPermission permeation;
 
     services = await Geolocator.isLocationServiceEnabled();
-    print(services);
+    log(services.toString());
     if (services == false) {
       // do any thing if you wont;
     }
@@ -42,7 +43,7 @@ class _googleMapViewState extends State<GoogleMapView> {
     if (permeation == LocationPermission.denied) {
       permeation = await Geolocator.requestPermission();
     }
-    print(permeation);
+    log(permeation.toString());
   }
 
   Future<void> getLatAndLong() async {
@@ -101,7 +102,7 @@ class _googleMapViewState extends State<GoogleMapView> {
       _markers.clear();
       _markers = {
         Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position: LatLng(widget.lat, widget.lon),
         ),
       };
@@ -146,7 +147,7 @@ class _googleMapViewState extends State<GoogleMapView> {
                       // }
                     },
                     mapType: MapType.normal,
-                    markers: _markers as Set<Marker>,
+                    markers: _markers,
                     initialCameraPosition: _kGooglePlex as CameraPosition,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
