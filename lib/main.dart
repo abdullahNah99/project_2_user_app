@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:google_maps_app/core/utils/app_colors.dart';
+import 'package:google_maps_app/core/utils/app_router.dart';
+import 'package:google_maps_app/screens/add_property_screen/add_property_screen.dart';
+
 import 'package:google_maps_app/screens/login_screen/login_screen.dart';
+import 'package:google_maps_app/screens/properties_screen/properties_screen.dart';
 import 'core/api/dio_helper.dart';
 import 'core/utils/cache_helper.dart';
 
@@ -21,13 +27,16 @@ class MapsApp extends StatelessWidget {
         return MaterialApp(
           theme: ThemeData(
             useMaterial3: true,
+            primaryColor: AppColors.defaultColor,
           ),
           debugShowCheckedModeBanner: false,
-          home: const LoginView(),
-          // initialRoute: CacheHelper.getData(key: 'Token') == null
+
+          initialRoute: PropertiesView.route,
+          //  CacheHelper.getData(key: 'Token') == null
           //     ? LoginView.route
           //     : AddPropertyView.route,
-          // routes: AppRouter.router,
+          routes: AppRouter.router,
+
         );
       },
     );

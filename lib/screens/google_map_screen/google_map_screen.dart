@@ -7,6 +7,10 @@ import 'dart:async';
 
 class GoogleMapView extends StatefulWidget {
   static const route = 'GoogleMapView';
+  final bool select;
+  var lat;
+  var lon;
+  List<RegionModel> locations = [];
   GoogleMapView({
     super.key,
     required this.select,
@@ -14,10 +18,6 @@ class GoogleMapView extends StatefulWidget {
     this.lon,
     required this.locations,
   });
-  final bool select;
-  var lat;
-  var lon;
-  List<RegionModel> locations = [];
 
   @override
   State<GoogleMapView> createState() => _GoogleMapViewState();
