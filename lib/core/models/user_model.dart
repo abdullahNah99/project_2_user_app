@@ -38,6 +38,6 @@ class RoleModel {
   RoleModel({required this.id, required this.nameEn});
 
   factory RoleModel.fromJson(Map<String, dynamic> jsonData) {
-    return RoleModel(id: jsonData['id'], nameEn: jsonData['name_en']);
+    return RoleModel(id: jsonData['id'], nameEn: jsonData['name']);
   }
 }
