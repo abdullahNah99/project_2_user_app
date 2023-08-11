@@ -80,7 +80,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
           position: LatLng(element.x, element.y),
           icon: await BitmapDescriptor.fromAssetImage(
             ImageConfiguration.empty,
-            'assets/images/home.png',
+            'assets/images/home1.png',
           ),
         ),
       );
@@ -96,7 +96,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     log('xxxxxxxxxxxxxxxxxxxxxxxxx');
     customMarker = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration.empty,
-      'assets/images/home.png',
+      'assets/images/home1.png',
     );
     setState(() {});
   }
