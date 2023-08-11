@@ -28,10 +28,10 @@ class MapsApp extends StatelessWidget {
             primaryColor: AppColors.defaultColor,
           ),
           debugShowCheckedModeBanner: false,
-          initialRoute: PropertiesView.route,
-          //  CacheHelper.getData(key: 'Token') == null
-          //     ? LoginView.route
-          //     : AddPropertyView.route,
+          initialRoute: //PropertiesView.route,
+              CacheHelper.getData(key: 'Token') == null
+                  ? LoginView.route
+                  : AddPropertyView.route,
           routes: AppRouter.router,
         );
       },

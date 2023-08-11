@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_app/core/models/region_model.dart';
@@ -10,6 +12,7 @@ class GoogleMapView extends StatefulWidget {
   var lat;
   var lon;
   List<RegionModel> locations = [];
+
   GoogleMapView({
     super.key,
     required this.select,
@@ -19,14 +22,18 @@ class GoogleMapView extends StatefulWidget {
   });
 
   @override
-  State<GoogleMapView> createState() => _googleMapViewState();
+  State<GoogleMapView> createState() => _GoogleMapViewState();
 }
 
-class _googleMapViewState extends State<GoogleMapView> {
+class _GoogleMapViewState extends State<GoogleMapView> {
   Position? cl;
-
   CameraPosition? _kGooglePlex;
   Set<Marker> _markers = {};
+  BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
+
+  Map<String, dynamic> location = {};
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   Future getPosition() async {
     bool services;
@@ -54,6 +61,7 @@ class _googleMapViewState extends State<GoogleMapView> {
     _markers.add(Marker(
       markerId: const MarkerId('1'),
       position: LatLng(cl!.latitude, cl!.longitude),
+      icon: customMarker,
     ));
 
     _kGooglePlex = CameraPosition(
@@ -63,36 +71,48 @@ class _googleMapViewState extends State<GoogleMapView> {
     setState(() {});
   }
 
+  void addLocationsToMarker() async {
+    _markers.clear();
+    for (var element in widget.locations) {
+      _markers.add(
+        Marker(
+          markerId: MarkerId(element.id.toString()),
+          position: LatLng(element.x, element.y),
+          icon: await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty,
+            'assets/images/home.png',
+          ),
+        ),
+      );
+    }
+    log(_markers.toString());
+    _kGooglePlex = CameraPosition(
+      target: LatLng(widget.locations[0].x, widget.locations[0].y),
+      zoom: 16.4746,
+    );
+  }
+
+  getCustomMArker() async {
+    log('xxxxxxxxxxxxxxxxxxxxxxxxx');
+    customMarker = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration.empty,
+      'assets/images/home.png',
+    );
+    setState(() {});
+  }
+
   @override
   void initState() {
+    getCustomMArker();
     if (widget.lat == null && widget.lon == null && widget.locations.isEmpty) {
       getPosition();
       getLatAndLong();
     }
 
     if (widget.locations.isNotEmpty) {
-      //_markers.clear();
-      x();
+      addLocationsToMarker();
     }
     super.initState();
-  }
-
-  Map<String, dynamic> location = {};
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  void x() {
-    _markers.clear();
-    for (var element in widget.locations) {
-      _markers.add(Marker(
-        markerId: MarkerId(element.id.toString()),
-        position: LatLng(element.x, element.y),
-      ));
-    }
-    _kGooglePlex = CameraPosition(
-      target: LatLng(widget.locations[0].x, widget.locations[0].y),
-      zoom: 16.4746,
-    );
   }
 
   @override
@@ -101,8 +121,9 @@ class _googleMapViewState extends State<GoogleMapView> {
       _markers.clear();
       _markers = {
         Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position: LatLng(widget.lat, widget.lon),
+          icon: customMarker,
         ),
       };
       _kGooglePlex = CameraPosition(
@@ -118,7 +139,9 @@ class _googleMapViewState extends State<GoogleMapView> {
       appBar: AppBar(),
       body: Column(
         children: [
-          _kGooglePlex == null || _markers.isEmpty
+          _kGooglePlex == null ||
+                  _markers.isEmpty ||
+                  customMarker == BitmapDescriptor.defaultMarker
               ? const Expanded(
                   child: Center(
                     child: CircularProgressIndicator(),
@@ -146,7 +169,7 @@ class _googleMapViewState extends State<GoogleMapView> {
                       // }
                     },
                     mapType: MapType.normal,
-                    markers: _markers as Set<Marker>,
+                    markers: _markers,
                     initialCameraPosition: _kGooglePlex as CameraPosition,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
