@@ -121,9 +121,7 @@ class _AddPropertyBody extends StatelessWidget {
                       lon: addPropertyCubit.selectedRegion != null
                           ? addPropertyCubit.selectedRegion!.y
                           : null,
-
-                      locations: const [],
-
+                      locations: [],
                     );
                   },
                 ),
