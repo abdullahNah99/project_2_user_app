@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +34,7 @@ class AddPropertyView extends StatelessWidget {
               ),
               onPressed: () async {
                 (await LogOutService.logout(
-                  token: CacheHelper.getData(key: 'Token'),
+                  token: await CacheHelper.getData(key: 'Token'),
                 ))
                     .fold(
                   (failure) {
@@ -116,24 +114,20 @@ class _AddPropertyBody extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return GoogleMapView(
-                      select: false,
+                      select: true,
                       lat: addPropertyCubit.selectedRegion != null
                           ? addPropertyCubit.selectedRegion!.x
                           : null,
                       lon: addPropertyCubit.selectedRegion != null
                           ? addPropertyCubit.selectedRegion!.y
                           : null,
-                      locations: addPropertyCubit.locations,
+
+                      locations: const [],
+
                     );
                   },
                 ),
-              ).then((value) =>
-                  log('${value['lat']}xxxxxxxxxxxxxx${value['long']}'));
-              // Navigator.pushNamed(
-              //   context,
-              //   GoogleMapView.route,
-              //   arguments: addPropertyCubit.selectedRegion,
-              // );
+              );
             },
           ),
         ],

@@ -40,7 +40,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     LocationPermission permeation;
 
     services = await Geolocator.isLocationServiceEnabled();
-    print(services);
+    log(services.toString());
     if (services == false) {
       // do any thing if you wont;
     }
@@ -49,7 +49,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     if (permeation == LocationPermission.denied) {
       permeation = await Geolocator.requestPermission();
     }
-    print(permeation);
+    log(permeation.toString());
   }
 
   Future<void> getLatAndLong() async {
