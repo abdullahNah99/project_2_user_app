@@ -1,37 +1,51 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_maps_app/core/utils/app_colors.dart';
-import 'package:google_maps_app/core/utils/app_router.dart';
-import 'package:google_maps_app/screens/add_property_screen/add_property_screen.dart';
-import 'package:google_maps_app/screens/login_screen/login_screen.dart';
-import 'package:google_maps_app/screens/properties_screen/properties_screen.dart';
-import 'core/api/dio_helper.dart';
-import 'core/utils/cache_helper.dart';
+import 'package:untitled/modules/splash_screen/splash_screen.dart';
+import 'package:untitled/shared/network/local/cache_helper.dart';
+import 'package:untitled/shared/network/remote/dio_helper.dart';
+import 'package:untitled/shared/styles/app_colors.dart';
+import 'package:untitled/shared/utils/app_router.dart';
+
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _initializeFirebase();
   await CacheHelper.init();
   DioHelper.init();
-  runApp(const MapsApp());
+  runApp(const MyApp());
 }
 
-class MapsApp extends StatelessWidget {
-  const MapsApp({super.key});
-
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (context, state) {
+      builder: (context, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: true,
-            primaryColor: AppColors.defaultColor,
+            primarySwatch: Colors.blueGrey,
+            appBarTheme: AppBarTheme(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(22.r),
+                ),
+              ),
+              color: AppColors.color2,
+              titleTextStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+              ),
+            ),
           ),
-          debugShowCheckedModeBanner: false,
-          initialRoute: //PropertiesView.route,
-              CacheHelper.getData(key: 'Token') == null
-                  ? LoginView.route
-                  : AddPropertyView.route,
+          initialRoute: SplashView.route,
+          // CacheHelper.getData(key: 'Token') == null
+          //     ? LoginView.route
+          //     : AddPropertyView.route,
           routes: AppRouter.router,
         );
       },
@@ -39,42 +53,16 @@ class MapsApp extends StatelessWidget {
   }
 }
 
-// class HomeView extends StatelessWidget {
-//   const HomeView({super.key});
+_initializeFirebase() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: TextButton(
-//           onPressed: () async {
-//             List<GovernorateModel> g = [];
-//             (await GetGovernoratesService.getGovernorates()).fold(
-//               (l) {},
-//               (r) {
-//                 g = r;
-//               },
-//             );
-//             CustomDialog.showCustomDialog(
-//               context,
-//               children: List.generate(
-//                 g.length,
-//                 (index) {
-//                   return CustomDialogButton(
-//                     onTap: () {
-//                       log(g[index].id.toString());
-//                     },
-//                     text: g[index].name,
-//                   );
-//                 },
-//               ),
-//             );
-            
-//           },
-//           child: const Text('Login'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+  // var result = await FlutterNotificationChannel.registerNotificationChannel(
+  //   description: 'For Showing Message Notification',
+  //   id: 'chats',
+  //   importance: NotificationImportance.IMPORTANCE_HIGH,
+  //   name: 'Chats',
+  // );
+  // log('\nNotification Channel Result: $result');
+}
